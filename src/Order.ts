@@ -1,14 +1,17 @@
 import Coupon from "./Coupon";
 import Cpf from "./Cpf";
 import OrderItem from "./OrderItem";
+import Shipping from "./Shipping";
 
 export default class Order {
     cpf: Cpf;
     items: OrderItem[];
     coupon: Coupon | undefined;
+    shipping: Shipping;
 
-    constructor (cpf: string) {
+    constructor (cpf: string, height: number, length: number, depth: number, weight: number, distance: number) {
         this.cpf = new Cpf(cpf);
+        this.shipping = new Shipping(height, length, depth, weight, distance)
         this.items = [];
     }
 
@@ -28,6 +31,6 @@ export default class Order {
         if (this.coupon) {
             total -= (total * this.coupon.percentage)/100;
         }
-        return total;
+        return total + this.shipping.getShippingValue();
     }
 }
